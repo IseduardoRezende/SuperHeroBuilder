@@ -1,0 +1,14 @@
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\bin\Debug\net8.0\SuperHeroBuilder.exe
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\bin\Debug\net8.0\SuperHeroBuilder.deps.json
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\bin\Debug\net8.0\SuperHeroBuilder.runtimeconfig.json
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\bin\Debug\net8.0\SuperHeroBuilder.dll
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\bin\Debug\net8.0\SuperHeroBuilder.pdb
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\SuperHeroBuilder.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\SuperHeroBuilder.AssemblyInfoInputs.cache
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\SuperHeroBuilder.AssemblyInfo.cs
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\SuperHeroBuilder.csproj.CoreCompileInputs.cache
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\SuperHeroBuilder.dll
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\refint\SuperHeroBuilder.dll
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\SuperHeroBuilder.pdb
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\SuperHeroBuilder.genruntimeconfig.cache
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\ref\SuperHeroBuilder.dll
