@@ -14,9 +14,9 @@ namespace SuperHeroBuilder.Interfaces
 
         ISuperHeroBuilder BuildSkills(params string[] skills);
 
-        ISuperHeroBuilder BuildAttack(double attack);
+        ISuperHeroBuilder BuildAttack(int attack);
 
-        ISuperHeroBuilder BuildDefense(double defense);
+        ISuperHeroBuilder BuildDefense(int defense);
 
         SuperHero GetSuperHero();        
     }

@@ -1,6 +1,6 @@
 ﻿namespace SuperHeroBuilder.Enums
 {
-    public enum Fighters
+    public enum Fighter
     {
         One,
         Two

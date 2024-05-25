@@ -1,15 +1,13 @@
 ﻿using SuperHeroBuilder.Entities;
 using SuperHeroBuilder.Validations;
 
-namespace SuperHeroBuilder.Builders
+namespace SuperHeroBuilder.Services
 {
-    public class RandomizeFight
-    {       
-        private readonly Random _random = new();
-
+    public class RandomizeFight : Randomize
+    {
         private string[] _superHerosNames =
         {
-            "Destroyer", "Slayer", "Invisible", "Phantom", "Vigilante", "Guardian", "Storm", "Shadow", "Lightning", "Night Hawk",
+            "Destroyer", "Slayer", "Invisible", "Phantom", "Vigilant", "Guardian", "Storm", "Shadow", "Lightning", "Night Hawk",
             "Solar Knight", "Shadow Master", "Steel Warrior", "Wild Spirit", "Sentry", "Cutting Wind", "Black Ray", "Golden Phoenix",
             "Silver Titan", "Lone Wolf"
         };
@@ -45,21 +43,19 @@ namespace SuperHeroBuilder.Builders
 
         public SuperHero BuildSuperHero()
         {
-            return new SuperHeroBuilder()
-                       .BuildName(_superHerosNames.ElementAt(_random.Next(_superHerosNames.Length)))
-                       .BuildDefense(_random.NextDouble())
-                       .BuildAttack(_random.NextDouble())
-                       .BuildPowers(_random.GetItems(_superHerosPowers, _random.Next(_superHerosPowers.Length)))
-                       .BuildSkills(_random.GetItems(_superHerosSkills, _random.Next(_superHerosSkills.Length)))
-                       .BuildEquipments(_random.GetItems(_superHerosEquipments, _random.Next(_superHerosEquipments.Length)))
-                       .BuildSecretIdentity(_superHerosSecretIdentities.ElementAt(_random.Next(_superHerosSecretIdentities.Length)))
+            return new MethodChainingSuperHeroBuilder()
+                       .BuildName(GetRandomItem(_superHerosNames))
+                       .BuildPowers(GetRandomItems(_superHerosPowers))
+                       .BuildSkills(GetRandomItems(_superHerosSkills))
+                       .BuildEquipments(GetRandomItems(_superHerosEquipments))
+                       .BuildSecretIdentity(GetRandomItem(_superHerosSecretIdentities))
                        .GetSuperHero();
         }
-        
+
         public RandomizeFight ExceptInfos(string superHeroName, string superHeroSecretIdentity)
         {
             SuperHeroBuilderInputValidation.ValidateInput(superHeroName, nameof(superHeroName));
-            SuperHeroBuilderInputValidation.ValidateInput(superHeroSecretIdentity, nameof(superHeroSecretIdentity));            
+            SuperHeroBuilderInputValidation.ValidateInput(superHeroSecretIdentity, nameof(superHeroSecretIdentity));
 
             _superHerosNames = _superHerosNames.Except(new[] { superHeroName }).ToArray();
             _superHerosSecretIdentities = _superHerosSecretIdentities.Except(new[] { superHeroSecretIdentity }).ToArray();

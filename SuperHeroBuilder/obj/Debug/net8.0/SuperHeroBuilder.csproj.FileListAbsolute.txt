@@ -12,3 +12,4 @@ C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8
 C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\SuperHeroBuilder.pdb
 C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\SuperHeroBuilder.genruntimeconfig.cache
 C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\ref\SuperHeroBuilder.dll
+C:\Users\Fabiola\Desktop\CSharp\SuperHeroBuilder\SuperHeroBuilder\obj\Debug\net8.0\SuperHeroBuilder.sourcelink.json

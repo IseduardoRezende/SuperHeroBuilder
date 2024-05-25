@@ -53,13 +53,13 @@ namespace SuperHeroBuilder.Builders
             return this;
         }
 
-        public ISuperHeroBuilder BuildAttack(double attack)
+        public ISuperHeroBuilder BuildAttack(int attack)
         {
             _superHero.Attack = attack;
             return this;
         }
 
-        public ISuperHeroBuilder BuildDefense(double defense)
+        public ISuperHeroBuilder BuildDefense(int defense)
         {
             _superHero.Defense = defense;   
             return this;

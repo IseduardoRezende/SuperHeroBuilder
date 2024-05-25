@@ -12,9 +12,9 @@
 
         public string[] Equipments { get; set; } = Array.Empty<string>();
 
-        public double Attack { get; set; }
+        public int Attack { get; set; }
 
-        public double Defense { get; set; }        
+        public int Defense { get; set; }        
 
         public override string ToString()
         {
