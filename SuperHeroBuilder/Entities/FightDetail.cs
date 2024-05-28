@@ -1,6 +1,7 @@
 ﻿using SuperHeroBuilder.Interfaces;
 using SuperHeroBuilder.Services;
 using SuperHeroBuilder.Services.Logs;
+using SuperHeroBuilder.Validations;
 
 namespace SuperHeroBuilder.Entities
 {
@@ -19,6 +20,8 @@ namespace SuperHeroBuilder.Entities
 
         public FightDetail(IFightLogger log)
         {
+            SuperHeroBuilderInputValidation.ValidateInput(log, nameof(log));
+
             _log = log;
             Description = Randomize.GetRandomItem(_fightDetailDescriptions);
         }

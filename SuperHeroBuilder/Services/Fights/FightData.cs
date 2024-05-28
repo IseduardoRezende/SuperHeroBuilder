@@ -1,6 +1,7 @@
 ﻿using SuperHeroBuilder.Entities;
 using SuperHeroBuilder.Enums;
 using SuperHeroBuilder.Interfaces;
+using SuperHeroBuilder.Validations;
 
 namespace SuperHeroBuilder.Services.Fights
 {
@@ -109,6 +110,9 @@ namespace SuperHeroBuilder.Services.Fights
 
         public FightData(SuperHero superHero, SuperHero superHeroAdversary)
         {
+            SuperHeroBuilderInputValidation.ValidateInput(superHero, nameof(superHero));
+            SuperHeroBuilderInputValidation.ValidateInput(superHeroAdversary, nameof(superHeroAdversary));
+
             _superHero = superHero;
             _superHeroAdversary = superHeroAdversary;
             _fightLogger = new FightLogger();

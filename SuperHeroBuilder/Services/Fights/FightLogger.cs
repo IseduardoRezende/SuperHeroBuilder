@@ -1,5 +1,6 @@
 ﻿using SuperHeroBuilder.Enums;
 using SuperHeroBuilder.Interfaces;
+using SuperHeroBuilder.Validations;
 
 namespace SuperHeroBuilder.Services.Fights
 {
@@ -11,6 +12,8 @@ namespace SuperHeroBuilder.Services.Fights
 
         public ILogger Append(ILogger logger)
         {
+            SuperHeroBuilderInputValidation.ValidateInput(logger, nameof(logger));
+
             Messages = Messages.Concat(logger.Messages).ToArray();
             LogStatus = LogStatus.Concat(logger.LogStatus).ToArray(); 
             
@@ -19,6 +22,8 @@ namespace SuperHeroBuilder.Services.Fights
 
         public void Log(string message, LogStatus status)
         {
+            SuperHeroBuilderInputValidation.ValidateInput(message, nameof(message));
+
             Messages = Messages.Append(message).ToArray();
             LogStatus = LogStatus.Append(status).ToArray();
         }               
