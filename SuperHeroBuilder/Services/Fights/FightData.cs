@@ -1,8 +1,16 @@
-﻿namespace SuperHeroBuilder.Services
+﻿using SuperHeroBuilder.Entities;
+using SuperHeroBuilder.Enums;
+using SuperHeroBuilder.Interfaces;
+
+namespace SuperHeroBuilder.Services.Fights
 {
     public class FightData
     {
-        private static readonly Dictionary<string, string[]> _equipmentsForPowers = new()
+        private readonly IFightLogger _fightLogger = new FightLogger();
+        private readonly SuperHero _superHero;
+        private readonly SuperHero _superHeroAdversary;
+
+        private static readonly Dictionary<string, string[]> _equipmentsForPower = new()
         {
             { "Super Strength",       new[] { "Energy Shield", "Exoskeleton", "Power Suit" } },
             { "Invisibility",         new[] { "Hologram Projector", "Night Vision Goggles", "Energy Shield" } },
@@ -26,7 +34,7 @@
             { "Super Agility",        new[] { "Energy Shield", "Magnetic Boots", "Exoskeleton" } }
         };
 
-        private static readonly Dictionary<string, string[]> _equipmentsForSkills = new()
+        private static readonly Dictionary<string, string[]> _equipmentsForSkill = new()
         {
             { "Martial Arts",        new[] { "Energy Shield", "Exoskeleton", "Power Suit" } },
             { "Stealth",             new[] { "Night Vision Goggles", "Invisibility Cloak", "Hologram Projector" } },
@@ -50,7 +58,7 @@
             { "Engineering",         new[] { "Nano Suit", "Cybernetic Implants", "Utility Belt" } }
         };
 
-        private static readonly Dictionary<string, string[]> _powersForEquipments = new()
+        private static readonly Dictionary<string, string[]> _powersForEquipment = new()
         {
             { "Energy Shield",          new[] { "Energy Blasts", "Telekinesis", "Super Strength" } },
             { "Exoskeleton",            new[] { "Super Strength", "Telekinesis" } },
@@ -58,7 +66,7 @@
             { "Hologram Projector",     new[] { "Telepathy", "Invisibility", "Shape Shifting" } },
             { "Night Vision Goggles",   new[] { "Invisibility", "Stealth" } },
             { "Force Field Generator",  new[] { "Telekinesis", "Energy Blasts", "Elemental Control" } },
-            { "Cybernetic Implants",    new[] { "Telepathy", "Hacking" } },
+            { "Cybernetic Implants",    new[] { "Telepathy", "Mind Control" } },
             { "Nano Suit",              new[] { "Shape Shifting", "Telekinesis" } },
             { "Teleportation Device",   new[] { "Dimensional Travel", "Time Manipulation" } },
             { "Plasma Sword",           new[] { "Invulnerability", "Healing Factor" } },
@@ -69,10 +77,12 @@
             { "Invisibility Cloak",     new[] { "Invisibility", "Stealth" } },
             { "Jetpack",                new[] { "Flight", "Super Agility" } },
             { "Utility Belt",           new[] { "Tactical Planning", "Survival Skills" } },
-            { "Healing Potion",         new[] { "Healing Factor", "Survival Skills" } }
+            { "Healing Potion",         new[] { "Healing Factor", "Survival Skills" } },
+            { "Laser Gun",              new[] { "Energy Blasts", "Heat Vision" } },
+            { "Grappling Hook",         new[] { "Super Agility", "Super Strength" } }
         };
 
-        private static readonly Dictionary<string, string[]> _skillsForEquipments = new()
+        private static readonly Dictionary<string, string[]> _skillsForEquipment = new()
         {
             { "Energy Shield",          new[] { "Marksmanship", "Swordsmanship" } },
             { "Exoskeleton",            new[] { "Martial Arts", "Hand-to-Hand Combat" } },
@@ -91,55 +101,129 @@
             { "Invisibility Cloak",     new[] { "Stealth", "Espionage" } },
             { "Jetpack",                new[] { "Piloting", "Acrobatics" } },
             { "Utility Belt",           new[] { "Survival Skills", "Tactical Planning" } },
-            { "Healing Potion",         new[] { "Survival Skills", "Hand-to-Hand Combat" } }
+            { "Healing Potion",         new[] { "Survival Skills", "Hand-to-Hand Combat" } },
+            { "Laser Gun",              new[] { "Marksmanship", "Hacking" } },
+            { "Grappling Hook",         new[] { "Acrobatics", "Escape Artist" } }
         };
 
-        public static void CancelPSByAdversaryEquipments(string[] superHeroPSList, string[] superHeroAdversaryEquipments, ref int totalPS)
+        public FightData(SuperHero superHero, SuperHero superHeroAdversary)
         {
-            var equipmentsForPowers = Array.Empty<string>();
-            var equipmentsForSkills = Array.Empty<string>();
+            _superHero = superHero;
+            _superHeroAdversary = superHeroAdversary;
+        }
+
+        public IFightLogger GetAttack(out int attack)
+        {
+            attack = _superHero.Powers.Length + _superHero.Skills.Length;
+
+            var psList = _superHero.Powers.Concat(_superHero.Skills).ToArray();
+
+            CalculateAttackByAdversaryDefense(psList, _superHeroAdversary.Equipments, ref attack);
+
+            return _fightLogger;
+        }
+
+        private void CalculateAttackByAdversaryDefense(string[] superHeroPSList, string[] superHeroAdversaryEquipments, ref int attack)
+        {
+            var equipmentsForPower = Array.Empty<string>();
+            var equipmentsForSkill = Array.Empty<string>();
+
+            int chancesToCancel = superHeroAdversaryEquipments.Length;
 
             foreach (var superHeroPS in superHeroPSList)
             {
-                if (_equipmentsForPowers.TryGetValue(superHeroPS, out equipmentsForPowers) || _equipmentsForSkills.TryGetValue(superHeroPS, out equipmentsForSkills))
+                if (_equipmentsForPower.TryGetValue(superHeroPS, out equipmentsForPower) || _equipmentsForSkill.TryGetValue(superHeroPS, out equipmentsForSkill))
                 {
-                    equipmentsForPowers ??= Array.Empty<string>();
-                    equipmentsForSkills ??= Array.Empty<string>();
+                    equipmentsForPower ??= Array.Empty<string>();
+                    equipmentsForSkill ??= Array.Empty<string>();
 
                     foreach (var equipment in superHeroAdversaryEquipments)
                     {
-                        if (equipmentsForPowers!.Contains(equipment) || equipmentsForSkills!.Contains(equipment))
+                        if (equipmentsForPower.Contains(equipment) || equipmentsForSkill.Contains(equipment))
                         {
-                            totalPS--;
+                            _fightLogger.Log(GetAttackCancelMessage(superHeroPS, equipment), LogStatus.Failed);
+                            attack--;
                             break;
                         }
+
+                        chancesToCancel--;
+
+                        if (chancesToCancel == 0)
+                        {
+                            _fightLogger.Log(GetAttackSucessMessage(superHeroPS), LogStatus.Success);
+                        }
                     }
+
+                    chancesToCancel = superHeroAdversaryEquipments.Length;
                 }
             }
         }
 
-        public static void CancelEquipmentsByAdversaryPS(string[] superHeroEquipments, string[] superHeroAdversaryPSList, ref int totalEquipments)
+        public IFightLogger GetDefense(out int defense)
         {
-            var powersForEquipments = Array.Empty<string>();
-            var skillsForEquipments = Array.Empty<string>();
+            defense = _superHero.Equipments.Length;
+
+            var adversaryPSList = _superHeroAdversary.Powers.Concat(_superHeroAdversary.Skills).ToArray();
+
+            CalculateDefenseByAdversaryAttack(_superHero.Equipments, adversaryPSList, ref defense);
+
+            return _fightLogger;
+        }
+
+        private void CalculateDefenseByAdversaryAttack(string[] superHeroEquipments, string[] superHeroAdversaryPSList, ref int defense)
+        {
+            var powersForEquipment = Array.Empty<string>();
+            var skillsForEquipment = Array.Empty<string>();
+
+            int chancesToCancel = superHeroAdversaryPSList.Length;
 
             foreach (var superHeroEquipment in superHeroEquipments)
             {
-                if (_powersForEquipments.TryGetValue(superHeroEquipment, out powersForEquipments) || _skillsForEquipments.TryGetValue(superHeroEquipment, out skillsForEquipments))
+                if (_powersForEquipment.TryGetValue(superHeroEquipment, out powersForEquipment) || _skillsForEquipment.TryGetValue(superHeroEquipment, out skillsForEquipment))
                 {
-                    powersForEquipments ??= Array.Empty<string>();
-                    skillsForEquipments ??= Array.Empty<string>();
+                    powersForEquipment ??= Array.Empty<string>();
+                    skillsForEquipment ??= Array.Empty<string>();
 
                     foreach (var ps in superHeroAdversaryPSList)
                     {
-                        if (powersForEquipments!.Contains(ps) || skillsForEquipments!.Contains(ps))
+                        if (powersForEquipment.Contains(ps) || skillsForEquipment.Contains(ps))
                         {
-                            totalEquipments--;
+                            _fightLogger.Log(GetDefenseCancelMessage(superHeroEquipment, ps), LogStatus.Failed);
+                            defense--;
                             break;
                         }
+
+                        chancesToCancel--;
+
+                        if (chancesToCancel == 0)
+                        {
+                            _fightLogger.Log(GetDefenseSucessMessage(superHeroEquipment), LogStatus.Success);
+                        }
                     }
+
+                    chancesToCancel = superHeroAdversaryPSList.Length;
                 }
             }
+        }
+
+        private string GetAttackCancelMessage(string superHeroPS, string superHeroAdversaryEquipment)
+        {
+            return $"{_superHero.Name} ({superHeroPS}) was 'Blocked' by {_superHeroAdversary.Name} ({superHeroAdversaryEquipment})";
+        }
+
+        private string GetDefenseCancelMessage(string superHeroEquipment, string superHeroAdversaryPS)
+        {
+            return $"{_superHero.Name} ({superHeroEquipment}) was 'Destroyed' by {_superHeroAdversary.Name} ({superHeroAdversaryPS})";
+        }
+
+        private string GetAttackSucessMessage(string superHeroPS)
+        {
+            return $"{_superHero.Name} ({superHeroPS}) was 'Mortal' into {_superHeroAdversary.Name} (Equipments)";
+        }
+
+        private string GetDefenseSucessMessage(string superHeroEquipment)
+        {
+            return $"{_superHero.Name} ({superHeroEquipment}) was 'Unbeatable' into {_superHeroAdversary.Name} (Powers and Skills)";
         }
     }
 }

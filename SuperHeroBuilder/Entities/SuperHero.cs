@@ -12,9 +12,9 @@
 
         public string[] Equipments { get; set; } = Array.Empty<string>();
 
-        public int Attack { get; set; }
+        public int TotalAttack { get { return Powers.Length + Skills.Length; } }
 
-        public int Defense { get; set; }        
+        public int TotalDefense { get { return Equipments.Length; } }        
 
         public override string ToString()
         {
@@ -23,8 +23,8 @@
                    $"Powers: {string.Join(", ", Powers)}\n" +
                    $"Skills: {string.Join(", ", Skills)}\n" +
                    $"Equipments: {string.Join(", ", Equipments)}\n" +
-                   $"Attack: {Attack}\n" +
-                   $"Defense: {Defense}\n";
+                   $"Total Attack: {TotalAttack}\n" +
+                   $"Total Defense: {TotalDefense}\n";
         }
     }
 }

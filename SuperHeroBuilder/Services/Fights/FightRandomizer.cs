@@ -1,9 +1,9 @@
 ﻿using SuperHeroBuilder.Entities;
 using SuperHeroBuilder.Validations;
 
-namespace SuperHeroBuilder.Services
+namespace SuperHeroBuilder.Services.Fights
 {
-    public class RandomizeFight : Randomize
+    public class FightRandomizer : Randomize
     {
         private string[] _superHerosNames =
         {
@@ -52,7 +52,7 @@ namespace SuperHeroBuilder.Services
                        .GetSuperHero();
         }
 
-        public RandomizeFight ExceptInfos(string superHeroName, string superHeroSecretIdentity)
+        public FightRandomizer ExceptInfos(string superHeroName, string superHeroSecretIdentity)
         {
             SuperHeroBuilderInputValidation.ValidateInput(superHeroName, nameof(superHeroName));
             SuperHeroBuilderInputValidation.ValidateInput(superHeroSecretIdentity, nameof(superHeroSecretIdentity));

@@ -15,7 +15,6 @@ namespace SuperHeroBuilder.Services
         public static T GetRandomItem<T>(T[] items)
         {
             SuperHeroBuilderInputValidation.ValidateInput(items, nameof(items));
-
             return items.ElementAt(_random.Next(items.Length));
         }
     }
