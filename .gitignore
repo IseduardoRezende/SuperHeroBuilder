@@ -1,0 +1,10 @@
+
+*.vsidx
+*.dll
+*.exe
+*.cache
+*.cache
+SuperHeroBuilder/obj/Debug/net8.0/SuperHeroBuilder.sourcelink.json
+*.pdb
+*.dll
+.vs/SuperHeroBuilder/v17/.suo

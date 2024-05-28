@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SuperHeroBuilder")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+cd15a7eb6e6797a42fbcd976ac58c19b5850616c")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+5ca47847ecc32ce165458877e66cde96e764fda1")]
 [assembly: System.Reflection.AssemblyProductAttribute("SuperHeroBuilder")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SuperHeroBuilder")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
