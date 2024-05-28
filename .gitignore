@@ -9,3 +9,6 @@ SuperHeroBuilder/obj/Debug/net8.0/SuperHeroBuilder.sourcelink.json
 *.dll
 .vs/SuperHeroBuilder/v17/.suo
 /.vs
+/.vs/SuperHeroBuilder
+/.vs/SuperHeroBuilder/v17
+/.vs
