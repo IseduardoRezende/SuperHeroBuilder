@@ -4,6 +4,6 @@
     {
         Success,
         Failed,
-        Irrelevant
+        Invariant
     }
 }

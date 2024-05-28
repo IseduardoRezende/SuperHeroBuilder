@@ -9,15 +9,16 @@ namespace SuperHeroBuilder.Services.Fights
         private readonly Fighter _bet;
         private readonly SuperHero _superHeroOne;
         private readonly SuperHero _superHeroTwo;
-
-        private IFightLogger _fightLogger = new FightLogger();
+        private IFightLogger _fightLogger;
 
         public Fight(Fighter bet)
         {
             _bet = bet;
-            _fightLogger.Log("Fight Started !", LogStatus.Irrelevant);
             _superHeroOne = new FightRandomizer().BuildSuperHero();
             _superHeroTwo = new FightRandomizer().ExceptInfos(_superHeroOne.Name, _superHeroOne.SecretIdentity).BuildSuperHero();
+            
+            _fightLogger = new FightLogger();
+            _fightLogger.Log("Fight Started !", LogStatus.Invariant);
         }
 
         public FightDetail Combat()
@@ -25,7 +26,7 @@ namespace SuperHeroBuilder.Services.Fights
             var winner = GetWinner();
             var loser  = GetLoser(winner);
 
-            _fightLogger.Log("Fight Ended !", LogStatus.Irrelevant);
+            _fightLogger.Log("Fight Ended !", LogStatus.Invariant);
 
             return new FightDetail(log: _fightLogger)
             {
@@ -34,6 +35,12 @@ namespace SuperHeroBuilder.Services.Fights
                 SuperHeroOne = _superHeroOne,
                 SuperHeroTwo = _superHeroTwo,
                 RightBet     = WasRightBet(winner),
+
+                SuperHeroOneDataDetail = new FightDataDetail(CalculateAttackPoints(_superHeroOne, _superHeroTwo,  isNeedToLog: false), 
+                                                             CalculateDefensePoints(_superHeroOne, _superHeroTwo, isNeedToLog: false)),
+
+                SuperHeroTwoDataDetail = new FightDataDetail(CalculateAttackPoints(_superHeroTwo, _superHeroOne,  isNeedToLog: false), 
+                                                             CalculateDefensePoints(_superHeroTwo, _superHeroOne, isNeedToLog: false))
             };
         }
 
@@ -41,7 +48,7 @@ namespace SuperHeroBuilder.Services.Fights
         {
             var totalPointsSuperHeroOne = CalculateTotalPoints(_superHeroOne, _superHeroTwo);
             var totalPointsSuperHeroTwo = CalculateTotalPoints(_superHeroTwo, _superHeroOne);
-
+            
             if (totalPointsSuperHeroOne == totalPointsSuperHeroTwo)
                 return Randomize.GetRandomItem(new[] { _superHeroOne, _superHeroTwo });
 
@@ -65,24 +72,30 @@ namespace SuperHeroBuilder.Services.Fights
             return CalculateAttackPoints(superHero, superHeroAdversary) + CalculateDefensePoints(superHero, superHeroAdversary);
         }
 
-        private int CalculateAttackPoints(SuperHero superHero, SuperHero superHeroAdversary)
+        private int CalculateAttackPoints(SuperHero superHero, SuperHero superHeroAdversary, bool isNeedToLog = true)
         {            
             var log = new FightData(superHero, superHeroAdversary)
                           .GetAttack(out int attack);
+
+            if (!isNeedToLog)
+                return attack;
 
             _fightLogger = (IFightLogger)_fightLogger.Append(log);
 
             return attack;
         }        
 
-        private int CalculateDefensePoints(SuperHero superHero, SuperHero superHeroAdversary)
+        private int CalculateDefensePoints(SuperHero superHero, SuperHero superHeroAdversary, bool isNeedToLog = true)
         {            
             var log = new FightData(superHero, superHeroAdversary)
                           .GetDefense(out int defense);
 
+            if (!isNeedToLog)
+                return defense;
+
             _fightLogger = (IFightLogger)_fightLogger.Append(log);
 
             return defense;
-        }       
+        }        
     }
 }
